@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-
-
-namespace Mobile.ViewModels;
+﻿namespace Mobile.ViewModels;
 
 public class AppShellViewModel : BaseViewModel
 {

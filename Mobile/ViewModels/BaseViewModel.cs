@@ -1,13 +1,11 @@
 ﻿using Mobile.Models;
 using System.ComponentModel;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace Mobile.ViewModels;
 public class BaseViewModel : INotifyPropertyChanged
 {
-    public IPassengerDataStore<Passenger> PassengerDataStore => DependencyService.Get<IPassengerDataStore<Passenger>>();
-    public IPeriodDataStore PeriodDataStore => DependencyService.Get<IPeriodDataStore>();
+    public IServiceDataStore PeriodDataStore => DependencyService.Get<IServiceDataStore>();
 
 
     bool isBusy = false;

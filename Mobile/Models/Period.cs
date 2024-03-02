@@ -1,4 +1,4 @@
-﻿namespace ContpassMobile.Models;
+﻿namespace Mobile.Models;
 
 public class Period
 {

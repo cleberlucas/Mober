@@ -7,39 +7,15 @@
     xmlns:ViewModels="clr-namespace:Mobile.ViewModels"
     Shell.FlyoutBehavior="Flyout">
 
-    <Shell.FlyoutHeader>
-       
-            <Frame BackgroundColor="{DynamicResource Primary}" x:DataType="ViewModels:AppShellViewModel" HeightRequest="200" CornerRadius="0">
-                <StackLayout Spacing="5">
-                    <Grid HeightRequest="100" WidthRequest="100" BackgroundColor="Transparent"  Padding="10" HorizontalOptions="CenterAndExpand">
-                        <Frame HeightRequest="100" WidthRequest="100" BackgroundColor="White" CornerRadius="100" Padding="10" HorizontalOptions="CenterAndExpand">
-                            <Frame BackgroundColor="White" HeightRequest="95" WidthRequest="95" CornerRadius="100" Margin="10">
-                                <Image HeightRequest="95" WidthRequest="95" Source="{Binding Logo}"/>
-                            </Frame>
-                        </Frame>
-                    </Grid>
-               
-                    <Label Text="{Binding Associatename}" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="CenterAndExpand"/>
-                    <Label Text="{Binding Associatedescription}"  FontSize="Micro" HorizontalOptions="CenterAndExpand"/>
-                </StackLayout>
-            </Frame>
-       
-       
-    </Shell.FlyoutHeader>
 
-    <FlyoutItem Title="Transport" Icon="map">
-        <ShellContent  Route="TransportView" ContentTemplate="{DataTemplate Views:TransportView}" />
+    <FlyoutItem Title="Contratante" Icon="contractor">
+        <ShellContent  Route="ContractorView" ContentTemplate="{DataTemplate Views:ContractorView}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Passenger" Icon="passenger" >
-        <Tab Title="Gone" Icon="next_locate.png" >
-            <ShellContent  Route="PassengerPageTab0" Appearing="ChangeTabIndexTo0" ContentTemplate="{DataTemplate Views:PassengerPage}"/>
-        </Tab>
-        <Tab Title="Back" Icon="previous_locate">
-            <ShellContent Route="PassengerPageTab1" Appearing="ChangeTabIndexTo1" ContentTemplate="{DataTemplate Views:PassengerPage}"/>
-        </Tab>
+    <FlyoutItem Title="Serviçal" Icon="servant">
+        <ShellContent  Route="ServantView" ContentTemplate="{DataTemplate Views:ServantView}" />
     </FlyoutItem>
-    
-    <MenuItem Text="Sign out" StyleClass="MenuItemLayoutStyle" Clicked="OnLogoutButtonClicked" IconImageSource="exit"/>
+
+    <MenuItem Text="Sair" StyleClass="MenuItemLayoutStyle" Clicked="OnLogoutButtonClicked" IconImageSource="exit"/>
 
 </Shell>

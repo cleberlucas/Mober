@@ -16,6 +16,10 @@
                 <Entry x:Name="EntryName"  BackgroundColor="Transparent" TextColor="Black" Placeholder="Digite seu nome" Keyboard="Text" Completed="OnLoginButtonClicked"/>
             </Frame>
 
+            <Frame Padding="10,0">
+                <Entry x:Name="EntryTelephone"  BackgroundColor="Transparent" TextColor="Black" Placeholder="Digite seu número de telefone" Keyboard="Telephone" Completed="OnLoginButtonClicked"/>
+            </Frame>
+
             <Button Text="Entrar" TextColor="White" BackgroundColor="{DynamicResource Primary}" Clicked="OnLoginButtonClicked"/>
 
             <ActivityIndicator x:Name="ActivityIndicator_Load"  Color="{DynamicResource Primary}"/>

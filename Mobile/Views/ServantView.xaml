@@ -2,21 +2,22 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Mobile.ViewModels"
-             x:DataType="local:TransportViewModel"
+             x:DataType="local:ServantViewModel"
              xmlns:class="clr-namespace:Mobile.ViewModels"
              xmlns:model="clr-namespace:Mobile.Models"
              xmlns:telerik="http://schemas.telerik.com/2022/xaml/maui"       
-             x:Class="Mobile.Views.TransportView">
+             x:Class="Mobile.Views.ServantView">
 
 
-    <Grid x:DataType="local:TransportViewModel">
-        <Picker Title="Procurar"  BackgroundColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Gray950}}" 
-            TextColor="{AppThemeBinding Light={StaticResource Gray950},Dark={StaticResource Primary}}" Margin="0"
-            TitleColor="{AppThemeBinding Light={StaticResource Gray950},Dark={StaticResource Primary}}"
-            x:Name="Picker" SelectedIndexChanged="Picker_SelectedIndexChanged" HorizontalTextAlignment="Center" HeightRequest="40" 
-            FontAttributes="Bold" FontSize="12" VerticalOptions="Start" ItemsSource="{Binding Periods}"  />
+    <Grid x:DataType="local:ServantViewModel">
+
               
-        <Map x:Name="map" Margin="0,40,0,0" IsScrollEnabled="{Binding Enable}" IsShowingUser="{Binding Enable}" IsZoomEnabled="{Binding Enable}" />
+        <Map 
+            x:Name="map" 
+            Margin="0,40,0,0" 
+            IsScrollEnabled="{Binding Enable}" 
+            IsShowingUser="{Binding Enable}" 
+            IsZoomEnabled="{Binding Enable}" />
 
         <Grid HeightRequest="40" WidthRequest="40" BackgroundColor="Transparent" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Margin="0, 50">
             <Frame x:Name="Frame" CornerRadius="100" BackgroundColor="WhiteSmoke">

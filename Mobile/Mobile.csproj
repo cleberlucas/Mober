@@ -12,10 +12,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>Contpass</ApplicationTitle>
+		<ApplicationTitle>MOber</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.contpass</ApplicationId>
+		<ApplicationId>com.mober</ApplicationId>
 		<ApplicationIdGuid>92ceb52b-1d69-4819-8375-0e851758d592</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -35,8 +35,8 @@
 
 		<!-- Splash Screen -->
 		<MauiIcon Include="Resources\AppIcon\crotas.png" />
-		<MauiSplashScreen Include="Resources\Splash\crotas.png" />
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Images\mober_logo.jpg" />
+		<MauiSplashScreen Include="Resources\Images\mober_logo.jpg" Color="#512BD4" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -67,37 +67,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="ViewPopups\PassengerDetailPopup.xaml.cs">
-	    <DependentUpon>PassengerDetailPopup.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Views\LoginView.xaml.cs">
 	    <DependentUpon>LoginView.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\PassengerView.xaml.cs">
-	    <DependentUpon>PassengerView.xaml</DependentUpon>
+	  <Compile Update="Views\ContractorView.xaml.cs">
+	    <DependentUpon>ContractorView.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\ScannerView.xaml.cs">
-	    <DependentUpon>ScannerView.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Views\TransportView.xaml.cs">
-	    <DependentUpon>TransportView.xaml</DependentUpon>
+	  <Compile Update="Views\ServantView.xaml.cs">
+	    <DependentUpon>ServantView.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="ViewPopups\PassengerDetailPopup.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Views\LoginView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\PassengerView.xaml">
+	  <MauiXaml Update="Views\ContractorView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\ScannerView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\TransportView.xaml">
+	  <MauiXaml Update="Views\ServantView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

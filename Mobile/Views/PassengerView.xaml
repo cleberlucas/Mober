@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"   
+             xmlns:local="clr-namespace:Mobile.ViewModels"
+             xmlns:model="clr-namespace:Mobile.Models"
+             Shell.NavBarIsVisible="False"
+             x:Class="Mobile.Views.PassengerPage">
+    <ContentPage.Content>
+
+        <Grid>
+            <Frame BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray300}}" BorderColor="Black" Margin="5,5,5,55">
+                <RefreshView x:DataType="local:PassengerViewModel" Command="{Binding RefreshPassengerCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+                    <CollectionView x:Name="ItemsListView" ItemsSource="{Binding Passengers}" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Passenger">
+                                <Frame BackgroundColor="{ Binding Color }" Margin="5" Padding="10">
+                                    <StackLayout  >
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="1*"/>
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Column="0" Margin="5" Grid.Row="0" TextColor="DarkSlateGray" Text="{Binding Associate.Name}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" HorizontalTextAlignment="Center"/>
+                                            <Label  Grid.Column="1" Grid.Row="0" Margin="5" TextColor="DarkSlateGray" Text="{Binding Point.Description}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" HorizontalTextAlignment="Center"/>
+                                        </Grid>
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding Source={RelativeSource AncestorType={x:Type local:PassengerViewModel}}, Path=PassengerTapped}"  CommandParameter="{Binding .}"/>
+                                        </StackLayout.GestureRecognizers>
+                                    </StackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </RefreshView>
+            </Frame>
+
+            <Grid HeightRequest="50" Padding="0" Margin="5,0,90,0" VerticalOptions="EndAndExpand">
+                <Frame CornerRadius="10" HeightRequest="0" Padding="0"
+                   VerticalOptions="EndAndExpand"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray300}}" BorderColor="Black">
+                    <Grid >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Frame Grid.Column="0" BackgroundColor="LightGray" CornerRadius="30" Margin="5" Grid.Row="0" />
+                        <Frame Grid.Column="1" BackgroundColor="Lime" CornerRadius="30" Margin="5" Grid.Row="0"/>
+                        <Frame Grid.Column="3" BackgroundColor="Yellow" CornerRadius="30" Margin="5"  Grid.Row="0"/>
+
+                        <Label Grid.Column="0"  Grid.Row="1" HorizontalOptions="CenterAndExpand" TextColor="Black" Text="PENDING" FontAttributes="Bold" FontSize="Micro" HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="1"  Grid.Row="1" HorizontalOptions="CenterAndExpand"  TextColor="Black" Text="CONFIRMED" FontAttributes="Bold" FontSize="Micro" HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="3"  Grid.Row="1"  HorizontalOptions="CenterAndExpand"  TextColor="Black" Text="NOT LISTED" FontAttributes="Bold" FontSize="Micro" HorizontalTextAlignment="Center" />
+                    </Grid>
+                </Frame>
+            </Grid>
+            <Grid HeightRequest="50" Padding="0" Margin="300,0,5,0" VerticalOptions="EndAndExpand" BackgroundColor="Transparent">
+                <Frame CornerRadius="10" HeightRequest="50" Padding="0"  VerticalOptions="EndAndExpand"
+                   BackgroundColor="{StaticResource Primary}" BorderColor="Black">
+                    <ImageButton Source="qr.png" Scale="0.6" Clicked="ImageButton"/>
+                </Frame>
+            </Grid>
+            
+
+
+        </Grid>
+            
+    </ContentPage.Content>
+</ContentPage>

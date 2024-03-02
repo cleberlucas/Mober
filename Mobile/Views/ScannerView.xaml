@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Mobile.ViewModels"
+             xmlns:model="clr-namespace:Mobile.Models"
+             x:Class="Mobile.Views.ScannerPage"
+             Shell.NavBarIsVisible="False"           
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI">
+
+    <Grid x:DataType="local:ScannerViewModel">
+        <zxing:CameraBarcodeReaderView x:Name="CameraBarcodeReaderView" IsDetecting="True" IsEnabled="True" IsTorchOn="False" BarcodesDetected="CameraBarcodeReaderView_BarcodesDetected" />
+
+      
+        <Image x:Name="Image_statusQrCode" HorizontalOptions="Center" VerticalOptions="Center" Scale="0.6" Margin="0,0,0,200" Source="scan_void" />
+
+        <Grid HorizontalOptions="Center" VerticalOptions="End" Padding="10,0" Margin="0,4" HeightRequest="215">
+            <Frame BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray300}}" BorderColor="Black" CornerRadius="10" >
+                <RefreshView IsEnabled="False">
+                    <CollectionView x:Name="ItemsListView" ItemsSource="{Binding Passengers}" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Passenger">
+                           
+                                <Frame BackgroundColor="{Binding Color}" Margin="5" Padding="10">
+                                    <StackLayout>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"/>
+
+
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="1*"/>
+
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Column="0" Margin="5" Grid.Row="0" TextColor="DarkSlateGray" Text="{Binding Associate.Name}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" HorizontalTextAlignment="Center"/>
+
+
+
+                                        </Grid>
+
+                                    </StackLayout>
+                                </Frame>
+                          
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </RefreshView>
+            </Frame>
+
+
+            <Entry HorizontalOptions="Center" VerticalOptions="End" HeightRequest="60" WidthRequest="180" x:Name="Entry_CPF" MaxLength="11" Placeholder="Type CPF" Keyboard="Numeric" CharacterSpacing="10" Completed="Entry_CPF_Completed" BackgroundColor="Transparent" PlaceholderColor="DarkSlateGray" TextColor="DarkSlateGray" FontAttributes="Bold"/>
+          
+        </Grid>
+        
+       
+     </Grid>
+   
+
+</ContentPage>

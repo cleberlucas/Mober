@@ -31,9 +31,9 @@
             IsShowingUser="{Binding Enable}" 
             IsZoomEnabled="{Binding Enable}" />
 
-        <Grid HeightRequest="40" WidthRequest="40" BackgroundColor="Transparent" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Margin="0, 50">
+        <Grid HeightRequest="50" WidthRequest="50" BackgroundColor="Transparent" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Margin="0, 50">
             <Frame x:Name="Frame" CornerRadius="100" BackgroundColor="WhiteSmoke">
-                <ImageButton Source="live_location" HeightRequest="40" WidthRequest="40" Clicked="LiveLocactionButton_Cliked"/>
+                <ImageButton Source="live_location" HeightRequest="50" WidthRequest="50" Clicked="LiveLocactionButton_Cliked"/>
             </Frame>
         </Grid>
     </Grid>

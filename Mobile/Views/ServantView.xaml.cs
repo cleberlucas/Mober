@@ -1,8 +1,13 @@
 ﻿
+using Appwrite.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
+using Mobile.Externals;
 using Mobile.Models;
+using Mobile.Repositories;
 using Mobile.ViewModels;
+using System.Web.WebPages;
 
 namespace Mobile.Views;
 
@@ -11,7 +16,6 @@ namespace Mobile.Views;
 public partial class ServantView : ContentPage
 {
     public IServiceDataStore ServicesDataStore => DependencyService.Get<IServiceDataStore>();
-    
 
     private CancellationTokenSource _cancelTokenSource;
 
@@ -32,8 +36,7 @@ public partial class ServantView : ContentPage
     {
         InitializeComponent();
 
-        ServicesDataStore.SetObjects(Dictionary.Services.List);
-
+        ServicesDataStore.SetObjects(Services.List);
 
         BindingContext = _viewModel = new ServantViewModel(
             ServicesDataStore.GetObjects()
@@ -50,11 +53,10 @@ public partial class ServantView : ContentPage
 
     public async Task InitializeMapComponent()
     {
-        try
+        while (!_viewModel.Enable)
         {
-            while (!_viewModel.Enable)
+            try
             {
-                await Task.Delay(1000);
 
                 var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(1));
 
@@ -62,47 +64,33 @@ public partial class ServantView : ContentPage
 
                 var location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
 
-                MainThread.BeginInvokeOnMainThread(() =>
+                if (location is not null)
                 {
-                    map.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(location.Latitude, location.Longitude), Distance.FromMiles(1)));
-                    _viewModel.Enable = true;
-                });
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        map.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(location.Latitude, location.Longitude), Distance.FromMiles(1)));
+                        _viewModel.Enable = true;
+                    });
+                }
+
+                await Task.Delay(1000);
+            }
+            catch (Exception ex)
+            {
+                //MainThread.BeginInvokeOnMainThread(async () =>
+                //{
+                //    await DisplayAlert("Ocorreu um erro ao inicializar o mapa:", ex.Message, "OK");
+                //});
+
+                await Task.Delay(10000);
 
             }
-        }
-        catch (Exception ex)
-        {
-            MainThread.BeginInvokeOnMainThread(async () =>
-            {
-                await DisplayAlert("Ocorreu um erro ao inicializar o mapa:", ex.Message, "OK");
-            });
         }
     }
 
     private void Picker_SelectedIndexChanged(object sender, EventArgs e)
     {
-        //string period = Picker.SelectedItem as string;
-
-        //if (period is null) return;
-
-
-        //_viewModel.Title = period;
-
-        //ServicesDataStore.SetObject(period);
-
-        //map.Pins.Clear();
-
-        //if (PointDataStore.GetObjects() is null) return;
-        //foreach (var point in PointDataStore.GetObjects().Where(x => x.Period == period))
-        //{
-        //    map.Pins.Add(new Pin
-        //    {
-        //        Label = point.Id.ToString(),
-        //        Address = point.Description,
-        //        Location = new Location(point.Latitude, point.Longitude)
-
-        //    });
-        //}
+        map.Pins.Clear();
     }
 
     private async void LiveLocactionButton_Cliked(object sender, EventArgs e)
@@ -127,13 +115,8 @@ public partial class ServantView : ContentPage
     {
         try
         {
-            //var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
-
-            //_cancelTokenSource = new CancellationTokenSource();
-
-            //var location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
-
-            //var vehicle = VehicleDataStore.GetObject();
+            var db = new MoberContext(new DbContextOptions<MoberContext>());
+            var user = new User();
 
             Frame.BackgroundColor = Colors.Yellow;
 
@@ -142,16 +125,22 @@ public partial class ServantView : ContentPage
             Frame.BackgroundColor = Colors.LimeGreen;
             while (_liveLocation)
             {
+                var service = Picker.SelectedItem as string;
 
-                //if (vehicle is not null)
-                //{
-                //    vehicle.Latitude = location.Latitude;
-                //    vehicle.Longitude = location.Longitude;
-                //    if (await new VehicleWebClient(_token).UpdateLocation(vehicle))
-                //        Frame.BackgroundColor = Colors.LimeGreen;
-                //    else 
-                //        Frame.BackgroundColor = Colors.Yellow;
-                //}
+                if (service.IsEmpty())
+                {
+                    MainThread.BeginInvokeOnMainThread(async () =>
+                    {
+                        await DisplayAlert("Serviço não informado:", "Você deve informar um serviço!", "OK");
+                    });
+
+                    Frame.BackgroundColor = Colors.Red;
+
+                    _serviceLiveLocationRunning = false;
+
+                    return;
+                }
+
 
                 var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
 
@@ -159,16 +148,43 @@ public partial class ServantView : ContentPage
 
                 var location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
 
+                var name = await SecureStorage.Default.GetAsync("EntryName");
+                var phone = await SecureStorage.Default.GetAsync("EntryTelephone");
+
+                user.Name = name;
+                user.Phone = phone;
+                user.Latitude = location.Latitude;
+                user.Longitude = location.Longitude;
+                user.Service = service;
+                user.Servant = true;
+                user.Updated = DateTime.Now;
+
+                var appwriteService = new AppwriteService();
+
+                if ((await appwriteService.GetUser(name)).Name.IsEmpty())
+                {
+                    await appwriteService.CreateUser(user);
+                }
+                else
+                {
+                    await appwriteService.UpdateUser(user);
+                }
+
+
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
                     map.Pins.Clear();
-                    map.Pins.Add(new Pin
+                    foreach (var item in (await appwriteService.GetUsers()).Where(x => x.Servant == false && x.Service == service))
                     {
-                        Label = "Labelxxx",
-                        Address = "Label",
-                        Location = new Location(location.Latitude, location.Longitude)
+                        
+                        map.Pins.Add(new Pin
+                        {
+                            Label = $" {await SecureStorage.Default.GetAsync("EntryName")} -  {await SecureStorage.Default.GetAsync("EntryTelephone")} ",
+                            Location = new Location(location.Latitude, location.Longitude)
 
-                    });
+                        });
+                    }
+
                 });
 
                 await Task.Delay(10000);

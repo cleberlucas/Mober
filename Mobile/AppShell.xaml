@@ -12,7 +12,7 @@
         <ShellContent  Route="ContractorView" ContentTemplate="{DataTemplate Views:ContractorView}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Serviçal" Icon="servant">
+    <FlyoutItem Title="Prestador" Icon="servant">
         <ShellContent  Route="ServantView" ContentTemplate="{DataTemplate Views:ServantView}" />
     </FlyoutItem>
 

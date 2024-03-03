@@ -10,6 +10,19 @@
 
 
     <Grid x:DataType="local:ServantViewModel">
+        <Map 
+           x:Name="map" 
+           Margin="0,0,0,60" 
+           IsScrollEnabled="{Binding Enable}" 
+           IsShowingUser="{Binding Enable}" 
+           IsZoomEnabled="{Binding Enable}" />
+
+        <Grid HeightRequest="50" WidthRequest="50" BackgroundColor="Transparent" HorizontalOptions="Center" VerticalOptions="Start" Margin="10">
+            <Frame x:Name="Frame" CornerRadius="100" BackgroundColor="WhiteSmoke">
+                <ImageButton Source="live_location" HeightRequest="50" WidthRequest="50" Clicked="LiveLocactionButton_Cliked"/>
+            </Frame>
+        </Grid>
+
         <Picker Title="Prestar serviço"  
              BackgroundColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Gray950}}"           
              TextColor="{AppThemeBinding Light={StaticResource Gray950},Dark={StaticResource Primary}}"   
@@ -19,26 +32,10 @@
              HorizontalTextAlignment="Center" 
              HeightRequest="40" 
              FontAttributes="Bold" 
-             FontSize="12" 
+             FontSize="15" 
              Margin="0"   
-             VerticalOptions="Start" 
+             VerticalOptions="End" 
              ItemsSource="{Binding Services}"  />
 
-        <Map 
-            x:Name="map" 
-            Margin="0,40,0,0" 
-            IsScrollEnabled="{Binding Enable}" 
-            IsShowingUser="{Binding Enable}" 
-            IsZoomEnabled="{Binding Enable}" />
-
-        <Grid HeightRequest="50" WidthRequest="50" BackgroundColor="Transparent" HorizontalOptions="CenterAndExpand" VerticalOptions="StartAndExpand" Margin="0, 50">
-            <Frame x:Name="Frame" CornerRadius="100" BackgroundColor="WhiteSmoke">
-                <ImageButton Source="live_location" HeightRequest="50" WidthRequest="50" Clicked="LiveLocactionButton_Cliked"/>
-            </Frame>
-        </Grid>
     </Grid>
-
-
-
-
 </ContentPage>

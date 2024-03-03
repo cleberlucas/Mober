@@ -5,17 +5,24 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:Views="clr-namespace:Mobile.Views"
     xmlns:ViewModels="clr-namespace:Mobile.ViewModels"
-    Shell.FlyoutBehavior="Flyout">
+    Shell.FlyoutBehavior="Flyout"
+    Shell.BackgroundColor="Transparent"
+    >
 
 
     <FlyoutItem Title="Contratante" Icon="contractor">
-        <ShellContent  Route="ContractorView" ContentTemplate="{DataTemplate Views:ContractorView}" />
+        <ShellSection>
+            <ShellContent  Route="ContractorView" ContentTemplate="{DataTemplate Views:ContractorView}" />
+        </ShellSection>
     </FlyoutItem>
 
     <FlyoutItem Title="Prestador" Icon="servant">
-        <ShellContent  Route="ServantView" ContentTemplate="{DataTemplate Views:ServantView}" />
+        <ShellSection>
+            <ShellContent  Route="ServantView" ContentTemplate="{DataTemplate Views:ServantView}" />
+        </ShellSection>
     </FlyoutItem>
 
-    <MenuItem Text="Sair" StyleClass="MenuItemLayoutStyle" Clicked="OnLogoutButtonClicked" IconImageSource="exit"/>
+
+    <MenuItem  Text="Sair" StyleClass="MenuItemLayoutStyle" Clicked="OnLogoutButtonClicked" IconImageSource="exit"/>
 
 </Shell>

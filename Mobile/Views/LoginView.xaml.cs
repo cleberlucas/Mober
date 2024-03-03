@@ -38,7 +38,6 @@ public partial class LoginView : ContentPage
                     await SecureStorage.Default.SetAsync("EntryTelephone", EntryTelephone.Text);
 
                     await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
-                    await Permissions.RequestAsync<Permissions.Camera>();
 
                     App.Current.MainPage = new AppShell();
                 }

@@ -1,15 +1,7 @@
-﻿using Mobile.Models;
-using System.Text.Json;
-using Appwrite;
-using Appwrite.Services;
-using Appwrite.Models;
-using MySqlX.XDevAPI;
-using User = Mobile.Models.User;
-using System.Xml;
-using System.Collections.Generic;
-using System.Reflection.Metadata;
+﻿using Appwrite.Services;
+using MoberUser = Mobile.Models.MoberUser;
 
-namespace Mobile.Externals
+namespace Mobile.DataStore.Externals
 {
     public class AppwriteService
     {
@@ -26,15 +18,15 @@ namespace Mobile.Externals
             _databases = new Databases(client);
         }
 
-        public async Task<List<User>> GetUsers()
+        public async Task<List<MoberUser>> GetUsers()
         {
-            var response =  new List<User>();
+            var response = new List<MoberUser>();
 
             var documentResult = await _databases.ListDocuments(databaseId: "65e3f020676a26467588", collectionId: "65e3f02a2cb8b928b5f0");
 
             foreach (var document in documentResult.Documents)
             {
-                User user = new User();
+                MoberUser user = new MoberUser();
                 user.Name = document.Data["name"].ToString();
                 user.Phone = document.Data["phone"].ToString();
                 user.Longitude = Convert.ToDouble(document.Data["longitude"]);
@@ -42,6 +34,7 @@ namespace Mobile.Externals
                 user.Service = document.Data["service"].ToString();
                 user.Servant = Convert.ToBoolean(document.Data["servant"]);
                 user.Updated = Convert.ToDateTime(document.Data["updated"]);
+                user.Rate = Convert.ToInt16(document.Data["rate"]);
 
                 response.Add(user);
             }
@@ -49,38 +42,44 @@ namespace Mobile.Externals
             return response;
         }
 
-        public async Task<User> GetUser(string userName)
+        public async Task<MoberUser> GetUser(string userName)
         {
-            var response = new User();
+            var response = new MoberUser();
 
-            var documentResult = await _databases.GetDocument(
+            try
+            {
+                var documentResult = await _databases.GetDocument(
                     databaseId: "65e3f020676a26467588",
                     collectionId: "65e3f02a2cb8b928b5f0",
                     documentId: userName
                 );
 
-            response.Name = documentResult.Data["name"].ToString();
-            response.Phone = documentResult.Data["phone"].ToString();
-            response.Longitude = Convert.ToDouble(documentResult.Data["longitude"]);
-            response.Latitude = Convert.ToDouble(documentResult.Data["latitude"]);
-            response.Service = documentResult.Data["service"].ToString();
-            response.Servant = Convert.ToBoolean(documentResult.Data["servant"]);
-            response.Updated = Convert.ToDateTime(documentResult.Data["updated"]);
+                response.Name = documentResult.Data["name"].ToString();
+                response.Phone = documentResult.Data["phone"].ToString();
+                response.Longitude = Convert.ToDouble(documentResult.Data["longitude"]);
+                response.Latitude = Convert.ToDouble(documentResult.Data["latitude"]);
+                response.Service = documentResult.Data["service"].ToString();
+                response.Servant = Convert.ToBoolean(documentResult.Data["servant"]);
+                response.Updated = Convert.ToDateTime(documentResult.Data["updated"]);
+                response.Rate = Convert.ToInt16(documentResult.Data["rate"]);
+
+            }
+            catch { }
 
             return response;
         }
 
-        public async Task CreateUser(User user)
+        public async Task CreateUser(MoberUser user)
         {
             await _databases.CreateDocument(
                     databaseId: "65e3f020676a26467588",
                     collectionId: "65e3f02a2cb8b928b5f0",
                     documentId: user.Name,
-                    data: user           
+                    data: user
                 );
         }
 
-        public async Task UpdateUser(User user)
+        public async Task UpdateUser(MoberUser user)
         {
             await _databases.UpdateDocument(
                     databaseId: "65e3f020676a26467588",

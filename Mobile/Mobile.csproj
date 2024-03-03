@@ -32,11 +32,11 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-
+		<MauiIcon Include="Platforms\Android\Resources\mipmap\sym_def_app_icon.svg" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" />
+		
 		<!-- Splash Screen -->
-		<MauiIcon Include="Resources\AppIcon\crotas.png" />
-		<MauiSplashScreen Include="Resources\Images\mober_logo.jpg" />
-		<MauiSplashScreen Include="Resources\Images\mober_logo.jpg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Images\mober_logo.png" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -50,10 +50,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\AppIcon\crotas.png" />
-	  <None Remove="Resources\Images\scan_scanning.png" />
-	  <None Remove="Resources\Splash\crotas.png" />
+	  <None Remove="Platforms\Android\Resources\mipmap\sym_def_app_icon.svg" />
 	</ItemGroup>
+
 
 	<ItemGroup>
 		<PackageReference Include="Appwrite" Version="0.7.1" />

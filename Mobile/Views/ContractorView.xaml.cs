@@ -1,12 +1,9 @@
-﻿
-using Appwrite.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Maui.Controls.Maps;
+﻿using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
-using Mobile.Externals;
+using Mobile.DataStore.Externals;
 using Mobile.Models;
-using Mobile.Repositories;
 using Mobile.ViewModels;
+using System.Diagnostics.Contracts;
 using System.Web.WebPages;
 
 namespace Mobile.Views;
@@ -19,10 +16,13 @@ public partial class ContractorView : ContentPage
 
     private CancellationTokenSource _cancelTokenSource;
 
+    AppwriteService _appwriteService;
 
     bool _serviceLiveLocationRunning;
     public bool _liveLocation;
     public string _token;
+    public string _name;
+    public string _phone;
 
     public enum PointDirections
     {
@@ -42,11 +42,16 @@ public partial class ContractorView : ContentPage
             ServicesDataStore.GetObjects()
         );
 
+        _appwriteService = new AppwriteService();
     }
 
     protected async override void OnAppearing()
     {
         base.OnAppearing();
+
+        _name = await SecureStorage.Default.GetAsync("EntryName");
+        _phone = await SecureStorage.Default.GetAsync("EntryTelephone");
+
 
         await Task.Run(() => InitializeMapComponent());
     }
@@ -72,19 +77,15 @@ public partial class ContractorView : ContentPage
                         _viewModel.Enable = true;
                     });
                 }
-
-                await Task.Delay(1000);
             }
-            catch (Exception ex)
+            catch
             {
                 //MainThread.BeginInvokeOnMainThread(async () =>
                 //{
                 //    await DisplayAlert("Ocorreu um erro ao inicializar o mapa:", ex.Message, "OK");
-                //});
-
-                await Task.Delay(10000);
-
+                //}
             }
+            await Task.Delay(1000);
         }
     }
 
@@ -99,7 +100,6 @@ public partial class ContractorView : ContentPage
 
         if (_liveLocation)
         {
-            Frame.BackgroundColor = Colors.Yellow;
             if (!_serviceLiveLocationRunning) await Task.Run(() => ServiceLiveLocation());
         }
         else
@@ -115,78 +115,76 @@ public partial class ContractorView : ContentPage
     {
         try
         {
-            var db = new MoberContext(new DbContextOptions<MoberContext>());
-            var user = new User();
+            var service = Picker.SelectedItem as string;
+
+            if (service.IsEmpty())
+            {
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    await DisplayAlert("Serviço não informado:", "Você deve informar um serviço!", "OK");
+                });
+
+                _serviceLiveLocationRunning = false;
+
+                return;
+            }
+
+            var user = new MoberUser();
 
             Frame.BackgroundColor = Colors.Yellow;
 
             _serviceLiveLocationRunning = true;
 
-            Frame.BackgroundColor = Colors.LimeGreen;
             while (_liveLocation)
             {
-                var service = Picker.SelectedItem as string;
-
-                if (service.IsEmpty())
-                {
-                    MainThread.BeginInvokeOnMainThread(async () =>
-                    {
-                        await DisplayAlert("Serviço não informado:", "Você deve informar um serviço!", "OK");
-                    });
-
-                    Frame.BackgroundColor = Colors.Red;
-
-                    _serviceLiveLocationRunning = false;
-
-                    return;
-                }
-
-
                 var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
 
                 _cancelTokenSource = new CancellationTokenSource();
 
                 var location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
 
-                var name = await SecureStorage.Default.GetAsync("EntryName");
-                var phone = await SecureStorage.Default.GetAsync("EntryTelephone");
 
-                user.Name = name;
-                user.Phone = phone;
+                user.Name = _name;
+                user.Phone = _phone;
                 user.Latitude = location.Latitude;
                 user.Longitude = location.Longitude;
                 user.Service = service;
                 user.Servant = false;
                 user.Updated = DateTime.Now;
 
-                var appwriteService = new AppwriteService();
 
-                if ((await appwriteService.GetUser(name)).Name.IsEmpty())
+                if ((await _appwriteService.GetUser(_name)).Name.IsEmpty())
                 {
-                    await appwriteService.CreateUser(user);
+                    await _appwriteService.CreateUser(user);
                 }
                 else
                 {
-                    await appwriteService.UpdateUser(user);
+                    await _appwriteService.UpdateUser(user);
                 }
 
+                var servents = (await _appwriteService.GetUsers())
+                    .Where(
+                        x => x.Servant == true &&
+                        x.Service == service &&
+                        DateTime.Now - x.Updated < TimeSpan.FromMinutes(5)
+                    );
 
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
                     map.Pins.Clear();
-                    foreach (var item in (await appwriteService.GetUsers()).Where(x => x.Servant == true && x.Service == service))
+                    foreach (var servent in servents)
                     {
 
                         map.Pins.Add(new Pin
                         {
-                            Label = $" {await SecureStorage.Default.GetAsync("EntryName")} -  {await SecureStorage.Default.GetAsync("EntryTelephone")} ",
+                            Label = $"Prestador: {servent.Name} \n Telefone: {servent.Phone} \n Avaliação: {servent.Rate}",
                             Location = new Location(location.Latitude, location.Longitude)
 
-                        });
+                        });     
                     }
-
                 });
 
+                if (Frame.BackgroundColor != Colors.LimeGreen) Frame.BackgroundColor = Colors.LimeGreen;
                 await Task.Delay(10000);
             }
 

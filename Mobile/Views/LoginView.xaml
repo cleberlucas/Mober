@@ -10,7 +10,7 @@
             Margin="0,100"
             VerticalOptions="Center">
 
-            <Image Source="mober_logo" HeightRequest="200"/>
+            <Image Source="mober_logo" />
 
             <Frame Padding="10,0">
                 <Entry x:Name="EntryName"  BackgroundColor="Transparent" TextColor="Black" Placeholder="Digite seu nome" Keyboard="Text" Completed="OnLoginButtonClicked"/>

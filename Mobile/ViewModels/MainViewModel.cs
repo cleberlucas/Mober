@@ -1,16 +1,16 @@
 ﻿namespace Mobile.ViewModels;
 
-public class ServantViewModel : BaseViewModel
+public class MainViewModel : BaseViewModel
 {
 
     private bool enable;
     private IEnumerable<string> _services;
 
-    public ServantViewModel()
+    public MainViewModel()
     {
     }
 
-    public ServantViewModel(IEnumerable<string> services)
+    public MainViewModel(IEnumerable<string> services)
     {
         _services = services;
     }

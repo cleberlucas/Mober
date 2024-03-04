@@ -9,9 +9,9 @@ namespace Mobile.Views;
 
 
 
-public partial class ServantView : ContentPage
+public partial class MainView : ContentPage
 {
-    public IServiceDataStore ServicesDataStore => DependencyService.Get<IServiceDataStore>();
+    public IMoberLoginDataStorage _moberLoginDataStorage => DependencyService.Get<IMoberLoginDataStorage>();
 
     private CancellationTokenSource _cancelTokenSource;
 
@@ -20,9 +20,6 @@ public partial class ServantView : ContentPage
     bool _serviceLiveLocationRunning;
     public bool _liveLocation;
     public string _token;
-    public string _name;
-    public string _phone;
-
 
     public enum PointDirections
     {
@@ -30,18 +27,14 @@ public partial class ServantView : ContentPage
         Previous
     }
 
-    ServantViewModel _viewModel;
+    readonly MainViewModel _viewModel;
 
-    public ServantView()
+    public MainView()
     {
         InitializeComponent();
 
-        ServicesDataStore.SetObjects(Services.List);
 
-        BindingContext = _viewModel = new ServantViewModel(
-            ServicesDataStore.GetObjects()
-        );
-
+        BindingContext = _viewModel = new MainViewModel(Services.List);
         _appwriteService = new AppwriteService();
     }
 
@@ -49,10 +42,13 @@ public partial class ServantView : ContentPage
     {
         base.OnAppearing();
 
-        _name = await SecureStorage.Default.GetAsync("EntryName");
-        _phone = await SecureStorage.Default.GetAsync("EntryTelephone");
+        PickerService.Title = _moberLoginDataStorage.GetObject().Servant ? "Buscar serviço" : "Solicitar serviço";
 
         await Task.Run(() => InitializeMapComponent());
+    }
+
+    protected async override void OnDisappearing()
+    {
     }
 
     public async Task InitializeMapComponent()
@@ -90,10 +86,19 @@ public partial class ServantView : ContentPage
         }
     }
 
+
+
     private void Picker_SelectedIndexChanged(object sender, EventArgs e)
     {
+        if (_liveLocation)
+        {
+            Frame.BackgroundColor = Colors.Yellow;
+
+        }
+
         map.Pins.Clear();
     }
+
 
     private async void LiveLocactionButton_Cliked(object sender, EventArgs e)
     {
@@ -116,9 +121,7 @@ public partial class ServantView : ContentPage
     {
         try
         {
-            var service = Picker.SelectedItem as string;
-
-            if (service.IsEmpty())
+            if (((string)PickerService.SelectedItem).IsEmpty())
             {
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
@@ -138,39 +141,40 @@ public partial class ServantView : ContentPage
 
             while (_liveLocation)
             {
+                var service = (string)PickerService.SelectedItem;
+
                 var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
 
                 _cancelTokenSource = new CancellationTokenSource();
 
                 var location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
 
-                user.Name = _name;
-                user.Phone = _phone;
+                user.Name = _moberLoginDataStorage.GetObject().Name;
+                user.Phone = _moberLoginDataStorage.GetObject().Phone;
                 user.Latitude = location.Latitude;
                 user.Longitude = location.Longitude;
                 user.Service = service;
-                user.Servant = true;
+                user.Servant = _moberLoginDataStorage.GetObject().Servant;
                 user.Updated = DateTime.Now;
 
-                var appwriteService = new AppwriteService();
-
-                if ((await appwriteService.GetUser(_name)).Name.IsEmpty())
+                if ((await _appwriteService.GetUser(_moberLoginDataStorage.GetObject().Name)).Name.IsEmpty())
                 {
-                    await appwriteService.CreateUser(user);
+                    await _appwriteService.CreateUser(user);
                 }
                 else
                 {
-                    await appwriteService.UpdateUser(user);
+                    await _appwriteService.UpdateUser(user);
                 }
 
                 var contractors = (await _appwriteService.GetUsers())
                     .Where(
-                        x => x.Servant == false &&
+                        x =>
+                        x.Servant != _moberLoginDataStorage.GetObject().Servant &&
                         x.Service == service &&
                         DateTime.Now - x.Updated < TimeSpan.FromMinutes(5)
                     );
 
-                MainThread.BeginInvokeOnMainThread(async () =>
+                MainThread.BeginInvokeOnMainThread(() =>
                 {
                     map.Pins.Clear();
                     foreach (var contractor in contractors)
@@ -186,9 +190,12 @@ public partial class ServantView : ContentPage
                 });
 
 
-                if  (Frame.BackgroundColor != Colors.LimeGreen) Frame.BackgroundColor = Colors.LimeGreen; ;
+                if (Frame.BackgroundColor != Colors.LimeGreen) Frame.BackgroundColor = Colors.LimeGreen; ;
                 await Task.Delay(10000);
             }
+
+            Frame.BackgroundColor = Colors.White;
+            Frame.BorderColor = Colors.White;
 
         }
         catch (Exception ex)

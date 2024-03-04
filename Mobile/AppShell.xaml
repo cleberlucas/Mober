@@ -10,15 +10,9 @@
     >
 
 
-    <FlyoutItem Title="Contratante" Icon="contractor">
+    <FlyoutItem Title="Buscar" Icon="contractor">
         <ShellSection>
-            <ShellContent  Route="ContractorView" ContentTemplate="{DataTemplate Views:ContractorView}" />
-        </ShellSection>
-    </FlyoutItem>
-
-    <FlyoutItem Title="Prestador" Icon="servant">
-        <ShellSection>
-            <ShellContent  Route="ServantView" ContentTemplate="{DataTemplate Views:ServantView}" />
+            <ShellContent  Route="MainView" ContentTemplate="{DataTemplate Views:MainView}" />
         </ShellSection>
     </FlyoutItem>
 

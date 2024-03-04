@@ -12,13 +12,45 @@
 
             <Image Source="mober_logo" />
 
-            <Frame Padding="10,0">
-                <Entry x:Name="EntryName"  BackgroundColor="Transparent" TextColor="Black" Placeholder="Digite seu nome" Keyboard="Text" Completed="OnLoginButtonClicked"/>
-            </Frame>
 
-            <Frame Padding="10,0">
-                <Entry x:Name="EntryTelephone"  BackgroundColor="Transparent" TextColor="Black" Placeholder="Digite seu número de telefone" Keyboard="Telephone" Completed="OnLoginButtonClicked"/>
-            </Frame>
+           
+            <Entry x:Name="EntryName" 
+                    BackgroundColor="Transparent" 
+                    TextColor="{AppThemeBinding Light={StaticResource Gray950},Dark={StaticResource White}}"
+                    Placeholder="Meu nome"
+                    Keyboard="Text" 
+                    Completed="OnLoginButtonClicked"/>
+         
+
+          
+            <Entry x:Name="EntryTelephone"  
+                    BackgroundColor="Transparent" 
+                    TextColor="{AppThemeBinding Light={StaticResource Gray950},Dark={StaticResource White}}"
+                    Placeholder="Meu telefone" 
+                    Keyboard="Telephone" 
+                    Completed="OnLoginButtonClicked"/>
+          
+
+
+
+            <Picker x:Name="PickerServant" 
+                    Title="Sou: Contratante ou Prestador" 
+                    SelectedIndexChanged="OnPickerTypeSelectedIndexChanged"                  
+                    BackgroundColor="Transparent"
+                    TextColor="{AppThemeBinding Light={StaticResource Gray950},Dark={StaticResource White}}"
+                    TitleColor="{AppThemeBinding Light={StaticResource Gray950},Dark={StaticResource White}}"
+                    HeightRequest="40" 
+                    VerticalOptions="End"                   
+                    >
+                    
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Contratante</x:String>
+                        <x:String>Prestador</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+       
 
             <Button Text="Entrar" TextColor="White" BackgroundColor="{DynamicResource Primary}" Clicked="OnLoginButtonClicked"/>
 

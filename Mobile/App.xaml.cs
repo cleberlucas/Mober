@@ -5,12 +5,29 @@ using System.Web.WebPages;
 namespace Mobile;
 public partial class App : Application
 {
+    public IMoberLoginDataStorage _moberLoginDataStorage => DependencyService.Get<IMoberLoginDataStorage>();
     public App()
     {
         InitializeComponent();
-        DependencyService.Register<IServiceDataStore, PeriodDataStore>();
+        DependencyService.Register<IMoberLoginDataStorage, MoberLoginDataStorage>();
 
-        if (!SecureStorage.Default.GetAsync("EntryName").Result.IsEmpty()) MainPage = new AppShell();
-        else MainPage = new LoginView();
+
+        if (!SecureStorage.Default.GetAsync("EntryName").Result.IsEmpty())
+        {
+            MainPage = new AppShell();
+
+            _moberLoginDataStorage.SetObject(
+                new MoberLogin()
+                {
+                    Name = SecureStorage.Default.GetAsync("EntryName").Result ?? "",
+                    Phone = SecureStorage.Default.GetAsync("EntryTelephone").Result ?? "",
+                    Servant = (SecureStorage.Default.GetAsync("IsServant").Result ?? "") == "Prestador",
+                }
+            );
+        }
+        else
+        {
+            MainPage = new LoginView();
+        }
     }
 }

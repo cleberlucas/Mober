@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 namespace Mobile.ViewModels;
 public class BaseViewModel : INotifyPropertyChanged
 {
-    public IServiceDataStore PeriodDataStore => DependencyService.Get<IServiceDataStore>();
+    public IMoberLoginDataStorage PeriodDataStore => DependencyService.Get<IMoberLoginDataStorage>();
 
 
     bool isBusy = false;

@@ -51,6 +51,9 @@
 
 	<ItemGroup>
 	  <None Remove="Platforms\Android\Resources\mipmap\sym_def_app_icon.svg" />
+	  <None Remove="Resources\Images\contractor.png" />
+	  <None Remove="Resources\Images\map.png" />
+	  <None Remove="Resources\Images\servant.png" />
 	</ItemGroup>
 
 
@@ -78,8 +81,8 @@
 	  <Compile Update="Views\LoginView.xaml.cs">
 	    <DependentUpon>LoginView.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\MainView.xaml.cs">
-	    <DependentUpon>MainView.xaml</DependentUpon>
+	  <Compile Update="Views\MapView.xaml.cs">
+	    <DependentUpon>MapView.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -87,7 +90,7 @@
 	  <MauiXaml Update="Views\LoginView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\MainView.xaml">
+	  <MauiXaml Update="Views\MapView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

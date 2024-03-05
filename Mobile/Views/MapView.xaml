@@ -2,20 +2,31 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Mobile.ViewModels"
-             x:DataType="local:MainViewModel"
+             x:DataType="local:MapViewModel"
              xmlns:class="clr-namespace:Mobile.ViewModels"
              xmlns:model="clr-namespace:Mobile.Models"
-             xmlns:telerik="http://schemas.telerik.com/2022/xaml/maui"       
-             x:Class="Mobile.Views.MainView">
+             xmlns:telerik="http://schemas.telerik.com/2022/xaml/maui"
+             xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
+             x:Class="Mobile.Views.MapView">
 
 
-    <Grid x:DataType="local:MainViewModel">
+    <Grid x:DataType="local:MapViewModel">
         <Map 
            x:Name="map" 
            Margin="0,0,0,60" 
            IsScrollEnabled="{Binding Enable}" 
            IsShowingUser="{Binding Enable}" 
            IsZoomEnabled="{Binding Enable}" />
+
+        <!--<maps:Map
+            x:Name="MyMap"
+            >
+            <maps:Map.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type models:LocationPin}">
+                    
+                </DataTemplate>
+            </maps:Map.ItemTemplate>
+        </maps:Map>-->
 
         <Grid HeightRequest="50" WidthRequest="50" BackgroundColor="Transparent" HorizontalOptions="Center" VerticalOptions="Start" Margin="10">
             <Frame x:Name="Frame" CornerRadius="100" BackgroundColor="WhiteSmoke">

@@ -1,4 +1,6 @@
-﻿namespace Mobile.Models;
+﻿using Mobile.Models;
+
+namespace Mobile.Interfaces;
 public interface IMoberLoginDataStorage
 {
     public MoberLogin GetObject();

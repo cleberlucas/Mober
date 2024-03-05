@@ -1,4 +1,5 @@
-﻿using Mobile.Models;
+﻿using Mobile.Interfaces;
+using Mobile.Models;
 
 public class MoberLoginDataStorage : IMoberLoginDataStorage
 {

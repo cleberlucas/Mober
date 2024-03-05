@@ -10,9 +10,9 @@
     >
 
 
-    <FlyoutItem Title="Buscar" Icon="contractor">
+    <FlyoutItem Title="Buscar" Icon="map">
         <ShellSection>
-            <ShellContent  Route="MainView" ContentTemplate="{DataTemplate Views:MainView}" />
+            <ShellContent  Route="MapView" ContentTemplate="{DataTemplate Views:MapView}" />
         </ShellSection>
     </FlyoutItem>
 

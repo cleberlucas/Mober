@@ -1,15 +1,20 @@
-﻿using Microsoft.Maui.Controls.Maps;
+﻿using Android.Locations;
+using Appwrite.Services;
+using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
-using Mobile.DataStore.Externals;
+using Mobile.Externals;
+using Mobile.Interfaces;
 using Mobile.Models;
 using Mobile.ViewModels;
 using System.Web.WebPages;
+using static Android.Graphics.ImageDecoder;
+using Location = Microsoft.Maui.Devices.Sensors.Location;
 
 namespace Mobile.Views;
 
 
 
-public partial class MainView : ContentPage
+public partial class MapView : ContentPage
 {
     public IMoberLoginDataStorage _moberLoginDataStorage => DependencyService.Get<IMoberLoginDataStorage>();
 
@@ -27,14 +32,14 @@ public partial class MainView : ContentPage
         Previous
     }
 
-    readonly MainViewModel _viewModel;
+    readonly MapViewModel _viewModel;
 
-    public MainView()
+    public MapView()
     {
         InitializeComponent();
 
 
-        BindingContext = _viewModel = new MainViewModel(Services.List);
+        BindingContext = _viewModel = new MapViewModel(Services.List);
         _appwriteService = new AppwriteService();
     }
 
@@ -90,7 +95,7 @@ public partial class MainView : ContentPage
 
     private void Picker_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (_liveLocation)
+        if (_liveLocation && _serviceLiveLocationRunning)
         {
             Frame.BackgroundColor = Colors.Yellow;
 
@@ -180,12 +185,15 @@ public partial class MainView : ContentPage
                     foreach (var contractor in contractors)
                     {
 
-                        map.Pins.Add(new Pin
+                        map.Pins.Add(new CustomPin
                         {
-                            Label = $"Contratante: {contractor.Name} \n Telefone: {contractor.Phone} \n Avaliação: {contractor.Rate}",
-                            Location = new Location(location.Latitude, location.Longitude)
-
+                            Label = contractor.Name,
+                            Location = new Location(location.Latitude, location.Longitude),
+                            Address = $"Avaliação: {contractor.Rate}",
+                            //ImageSource = ImageSource.FromResource($"Mobile.Resources.Images.{(_moberLoginDataStorage.GetObject().Servant ? "contractor" : "servant")}.png")
+                            ImageSource = ImageSource.FromUri(new Uri("https://img.icons8.com/arcade/64/person-male.png"))
                         });
+     
                     }
                 });
 

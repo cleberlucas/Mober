@@ -1,16 +1,16 @@
 ﻿namespace Mobile.ViewModels;
 
-public class MainViewModel : BaseViewModel
+public class MapViewModel : BaseViewModel
 {
 
     private bool enable;
     private IEnumerable<string> _services;
 
-    public MainViewModel()
+    public MapViewModel()
     {
     }
 
-    public MainViewModel(IEnumerable<string> services)
+    public MapViewModel(IEnumerable<string> services)
     {
         _services = services;
     }
@@ -26,6 +26,4 @@ public class MainViewModel : BaseViewModel
         get => enable;
         set => SetProperty(ref enable, value);
     }
-
-
 }

@@ -1,7 +1,7 @@
 ﻿using Appwrite.Services;
 using MoberUser = Mobile.Models.MoberUser;
 
-namespace Mobile.DataStore.Externals
+namespace Mobile.Externals
 {
     public class AppwriteService
     {

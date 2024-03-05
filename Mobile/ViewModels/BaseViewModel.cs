@@ -1,4 +1,4 @@
-﻿using Mobile.Models;
+﻿using Mobile.Interfaces;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 

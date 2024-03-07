@@ -40,29 +40,29 @@ public partial class LoginView : ContentPage
                 }
                 else
                 {
-                    if (((string)PickerServant.SelectedItem).IsEmpty())
-                    {
-                        await DisplayAlert("Dados inválidos!", "Informe se você é um Contratante/Prestador!", "OK");
-                    }
-                    else
-                    {
-                        await SecureStorage.Default.SetAsync("EntryName", EntryName.Text);
-                        await SecureStorage.Default.SetAsync("EntryTelephone", EntryTelephone.Text);
-                        await SecureStorage.Default.SetAsync("IsServant", (string)PickerServant.SelectedItem);
+                    //if (((string)PickerServant.SelectedItem).IsEmpty())
+                    //{
+                    //    await DisplayAlert("Dados inválidos!", "Informe se você é um Contratante/Prestador!", "OK");
+                    //}
+                    //else
+                    //{
+                    await SecureStorage.Default.SetAsync("EntryName", EntryName.Text);
+                    await SecureStorage.Default.SetAsync("EntryTelephone", EntryTelephone.Text);
+                    //await SecureStorage.Default.SetAsync("IsServant", (string)PickerServant.SelectedItem);
 
-                        _moberLoginDataStorage.SetObject(
-                            new MoberLogin()
-                            {
-                                Name = EntryName.Text,
-                                Phone = EntryTelephone.Text,
-                                Servant = ((string)PickerServant.SelectedItem) == "Prestador",
-                            }
-                        );
+                    _moberLoginDataStorage.SetObject(
+                        new MoberLogin()
+                        {
+                            Name = EntryName.Text,
+                            Phone = EntryTelephone.Text,
+                            //Servant = ((string)PickerServant.SelectedItem) == "Prestador",
+                        }
+                    );
 
-                        await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                    await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
 
-                        App.Current.MainPage = new AppShell();
-                    }
+                    App.Current.MainPage = new AppShell();
+                    // }
                 }
             }
         }

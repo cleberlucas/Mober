@@ -2,24 +2,19 @@
 
 public class AppShellViewModel : BaseViewModel
 {
-    public static int tabIndex;
 
-    private string logo;
-    private string associatedescription;
-    private string associatename;
-    public string Logo
+    private string userPhone;
+    private string userNmae;
+
+    public string UserName
     {
-        get => logo;
-        set => logo = value;
+        get => userNmae;
+        set => SetProperty(ref userNmae, value);
     }
-    public string Associatedescription
+
+    public string UserPhone
     {
-        get => associatedescription;
-        set => associatedescription = value;
-    }
-    public string Associatename
-    {
-        get => associatename;
-        set => associatename = value;
+        get => userPhone;
+        set => SetProperty(ref userPhone, value);
     }
 }

@@ -33,7 +33,7 @@
 
 
 
-            <Picker x:Name="PickerServant" 
+            <!--<Picker x:Name="PickerServant" 
                     Title="Sou: Contratante ou Prestador" 
                     SelectedIndexChanged="OnPickerTypeSelectedIndexChanged"                  
                     BackgroundColor="Transparent"
@@ -49,7 +49,7 @@
                         <x:String>Prestador</x:String>
                     </x:Array>
                 </Picker.ItemsSource>
-            </Picker>
+            </Picker>-->
        
 
             <Button Text="Entrar" TextColor="White" BackgroundColor="{DynamicResource Primary}" Clicked="OnLoginButtonClicked"/>

@@ -9,14 +9,50 @@
     Shell.BackgroundColor="Transparent"
     >
 
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <Grid BackgroundColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Gray950}}"
+                  HeightRequest="200">
+                <Image Aspect="Center"
+                       Source="person.png"
+                       Opacity="1" />
 
-    <FlyoutItem Title="Buscar" Icon="map">
-        <ShellSection>
-            <ShellContent  Route="MapView" ContentTemplate="{DataTemplate Views:MapView}" />
-        </ShellSection>
+                <Label Text="{Binding UserName}"
+                       TextColor="{AppThemeBinding Light={StaticResource Gray950},Dark={StaticResource Primary}}" 
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="End" 
+                   Margin="10"
+                       />
+
+                <!--<Label Text="{Binding UserPhone}"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="End"
+                    VerticalTextAlignment="End"
+                   Margin="10,0"
+                       />-->
+            </Grid>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
+
+
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent x:Name="ShellRequestService" Icon="request" Title="Solicitar"  Route="ContractorView" ContentTemplate="{DataTemplate Views:ContractorView}" />
+        <ShellContent x:Name="ShellSearchService" Icon="work" Title="Procurar"  Route="ServantView" ContentTemplate="{DataTemplate Views:ServantView}" />
     </FlyoutItem>
 
-
-    <MenuItem  Text="Sair" StyleClass="MenuItemLayoutStyle" Clicked="OnLogoutButtonClicked" IconImageSource="exit"/>
+    <MenuItem  
+        Text="Sair" 
+        StyleClass="MenuItemLayoutStyle" 
+        Clicked="OnLogoutButtonClicked"
+        IconImageSource="logout"
+        />
+    
+    <ShellContent 
+        Title="Sobre"           
+        Icon="sobre.png" 
+        Route="ServantView" 
+        />
 
 </Shell>

@@ -51,9 +51,17 @@
 
 	<ItemGroup>
 	  <None Remove="Platforms\Android\Resources\mipmap\sym_def_app_icon.svg" />
+	  <None Remove="Resources\Fonts\logout.png" />
 	  <None Remove="Resources\Images\contractor.png" />
 	  <None Remove="Resources\Images\map.png" />
+	  <None Remove="Resources\Images\request.png" />
 	  <None Remove="Resources\Images\servant.png" />
+	  <None Remove="Resources\Images\sobre.png" />
+	  <None Remove="Resources\Images\work.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiFont Include="Resources\Images\logout.png" />
 	</ItemGroup>
 
 
@@ -81,8 +89,11 @@
 	  <Compile Update="Views\LoginView.xaml.cs">
 	    <DependentUpon>LoginView.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\MapView.xaml.cs">
-	    <DependentUpon>MapView.xaml</DependentUpon>
+	  <Compile Update="Views\ContractorView.xaml.cs">
+	    <DependentUpon>ContractorView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\ServantView.xaml.cs">
+	    <DependentUpon>ServantView.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
@@ -90,7 +101,10 @@
 	  <MauiXaml Update="Views\LoginView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\MapView.xaml">
+	  <MauiXaml Update="Views\ContractorView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ServantView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

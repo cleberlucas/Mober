@@ -15,16 +15,15 @@ public partial class App : Application
 
         if (!SecureStorage.Default.GetAsync("EntryName").Result.IsEmpty())
         {
-            MainPage = new AppShell();
-
             _moberLoginDataStorage.SetObject(
                 new MoberLogin()
                 {
                     Name = SecureStorage.Default.GetAsync("EntryName").Result ?? "",
                     Phone = SecureStorage.Default.GetAsync("EntryTelephone").Result ?? "",
-                    Servant = (SecureStorage.Default.GetAsync("IsServant").Result ?? "") == "Prestador",
                 }
             );
+
+            MainPage = new AppShell();
         }
         else
         {

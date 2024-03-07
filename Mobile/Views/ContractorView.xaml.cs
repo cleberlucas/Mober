@@ -1,59 +1,55 @@
-﻿using Android.Locations;
-using Appwrite.Services;
-using Microsoft.Maui.Controls.Maps;
-using Microsoft.Maui.Maps;
+﻿using Microsoft.Maui.Maps;
 using Mobile.Externals;
 using Mobile.Interfaces;
 using Mobile.Models;
 using Mobile.ViewModels;
 using System.Web.WebPages;
-using static Android.Graphics.ImageDecoder;
 using Location = Microsoft.Maui.Devices.Sensors.Location;
 
 namespace Mobile.Views;
 
 
 
-public partial class MapView : ContentPage
+public partial class ContractorView : ContentPage
 {
     public IMoberLoginDataStorage _moberLoginDataStorage => DependencyService.Get<IMoberLoginDataStorage>();
 
     private CancellationTokenSource _cancelTokenSource;
 
     AppwriteService _appwriteService;
+    MoberUser _user;
 
     bool _serviceLiveLocationRunning;
     public bool _liveLocation;
     public string _token;
 
-    public enum PointDirections
-    {
-        Next,
-        Previous
-    }
+    readonly ContractorViewModel _viewModel;
 
-    readonly MapViewModel _viewModel;
-
-    public MapView()
+    public ContractorView()
     {
         InitializeComponent();
 
 
-        BindingContext = _viewModel = new MapViewModel(Services.List);
-        _appwriteService = new AppwriteService();
+        BindingContext = _viewModel = new ContractorViewModel()
+        {
+            Services = Services.List
+        };
+
+        _user = new ();
+
+        _user.Name = _moberLoginDataStorage.GetObject().Name;
+        _user.Phone = _moberLoginDataStorage.GetObject().Phone;
+        _user.Servant = false;
+
+        _appwriteService = new();
     }
 
     protected async override void OnAppearing()
     {
         base.OnAppearing();
 
-        PickerService.Title = _moberLoginDataStorage.GetObject().Servant ? "Buscar serviço" : "Solicitar serviço";
-
         await Task.Run(() => InitializeMapComponent());
-    }
 
-    protected async override void OnDisappearing()
-    {
     }
 
     public async Task InitializeMapComponent()
@@ -80,10 +76,6 @@ public partial class MapView : ContentPage
             }
             catch
             {
-                //MainThread.BeginInvokeOnMainThread(async () =>
-                //{
-                //    await DisplayAlert("Ocorreu um erro ao inicializar o mapa:", ex.Message, "OK");
-                //});
 
             }
 
@@ -103,11 +95,16 @@ public partial class MapView : ContentPage
 
         map.Pins.Clear();
     }
-
-
     private async void LiveLocactionButton_Cliked(object sender, EventArgs e)
     {
+        if (((string)PickerService.SelectedItem).IsEmpty())
+        {
+            await DisplayAlert("Serviço não informado:", "Você deve informar um serviço!", "OK");
+            return;
+        }
+
         _liveLocation = !_liveLocation;
+
 
         if (_liveLocation)
         {
@@ -115,9 +112,7 @@ public partial class MapView : ContentPage
         }
         else
         {
-
             Frame.BackgroundColor = Colors.White;
-            Frame.BorderColor = Colors.White;
         }
 
     }
@@ -138,7 +133,6 @@ public partial class MapView : ContentPage
                 return;
             }
 
-            var user = new MoberUser();
 
             Frame.BackgroundColor = Colors.Yellow;
 
@@ -146,36 +140,30 @@ public partial class MapView : ContentPage
 
             while (_liveLocation)
             {
-                var service = (string)PickerService.SelectedItem;
-
+                _user.Service = (string)PickerService.SelectedItem;
                 var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+                var location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
 
                 _cancelTokenSource = new CancellationTokenSource();
 
-                var location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
+                _user.Latitude = location.Latitude;
+                _user.Longitude = location.Longitude;
+                _user.Updated = DateTime.Now;
 
-                user.Name = _moberLoginDataStorage.GetObject().Name;
-                user.Phone = _moberLoginDataStorage.GetObject().Phone;
-                user.Latitude = location.Latitude;
-                user.Longitude = location.Longitude;
-                user.Service = service;
-                user.Servant = _moberLoginDataStorage.GetObject().Servant;
-                user.Updated = DateTime.Now;
-
-                if ((await _appwriteService.GetUser(_moberLoginDataStorage.GetObject().Name)).Name.IsEmpty())
+                if ((await _appwriteService.GetUser(_user.Name)).Name.IsEmpty())
                 {
-                    await _appwriteService.CreateUser(user);
+                    await _appwriteService.CreateUser(_user);
                 }
                 else
                 {
-                    await _appwriteService.UpdateUser(user);
+                    await _appwriteService.UpdateUser(_user);
                 }
 
                 var contractors = (await _appwriteService.GetUsers())
                     .Where(
                         x =>
-                        x.Servant != _moberLoginDataStorage.GetObject().Servant &&
-                        x.Service == service &&
+                        x.Servant != _user.Servant &&
+                        x.Service == _user.Service &&
                         DateTime.Now - x.Updated < TimeSpan.FromMinutes(5)
                     );
 
@@ -190,10 +178,10 @@ public partial class MapView : ContentPage
                             Label = contractor.Name,
                             Location = new Location(location.Latitude, location.Longitude),
                             Address = $"Avaliação: {contractor.Rate}",
-                            //ImageSource = ImageSource.FromResource($"Mobile.Resources.Images.{(_moberLoginDataStorage.GetObject().Servant ? "contractor" : "servant")}.png")
-                            ImageSource = ImageSource.FromUri(new Uri("https://img.icons8.com/arcade/64/person-male.png"))
+                            //ImageSource = ImageSource.FromFile($"{(_user.Servant ? "contractor" : "servant")}.png")
+                            ImageSource = ImageSource.FromFile("person.png")
                         });
-     
+
                     }
                 });
 

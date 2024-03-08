@@ -10,7 +10,7 @@
             Margin="0,100"
             VerticalOptions="Center">
 
-            <Image Source="mober_logo" />
+            <Image Source="mober" />
 
 
            
@@ -30,27 +30,6 @@
                     Keyboard="Telephone" 
                     Completed="OnLoginButtonClicked"/>
           
-
-
-
-            <!--<Picker x:Name="PickerServant" 
-                    Title="Sou: Contratante ou Prestador" 
-                    SelectedIndexChanged="OnPickerTypeSelectedIndexChanged"                  
-                    BackgroundColor="Transparent"
-                    TextColor="{AppThemeBinding Light={StaticResource Gray950},Dark={StaticResource White}}"
-                    TitleColor="{AppThemeBinding Light={StaticResource Gray950},Dark={StaticResource White}}"
-                    HeightRequest="40" 
-                    VerticalOptions="End"                   
-                    >
-                    
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>Contratante</x:String>
-                        <x:String>Prestador</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>-->
-       
 
             <Button Text="Entrar" TextColor="White" BackgroundColor="{DynamicResource Primary}" Clicked="OnLoginButtonClicked"/>
 

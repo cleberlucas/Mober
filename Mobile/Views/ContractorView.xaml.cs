@@ -49,7 +49,6 @@ public partial class ContractorView : ContentPage
         base.OnAppearing();
 
         await Task.Run(() => InitializeMapComponent());
-
     }
 
     public async Task InitializeMapComponent()
@@ -83,18 +82,12 @@ public partial class ContractorView : ContentPage
         }
     }
 
-
-
     private void Picker_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (_liveLocation && _serviceLiveLocationRunning)
-        {
-            Frame.BackgroundColor = Colors.Yellow;
-
-        }
 
         map.Pins.Clear();
     }
+
     private async void LiveLocactionButton_Cliked(object sender, EventArgs e)
     {
         if (((string)PickerService.SelectedItem).IsEmpty())
@@ -133,13 +126,12 @@ public partial class ContractorView : ContentPage
                 return;
             }
 
-
-            Frame.BackgroundColor = Colors.Yellow;
-
             _serviceLiveLocationRunning = true;
 
             while (_liveLocation)
             {
+                MainThread.BeginInvokeOnMainThread(() => { ActivityIndicatorLoading.IsRunning = true; });
+
                 _user.Service = (string)PickerService.SelectedItem;
                 var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
                 var location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
@@ -176,9 +168,8 @@ public partial class ContractorView : ContentPage
                         map.Pins.Add(new CustomPin
                         {
                             Label = contractor.Name,
-                            Location = new Location(location.Latitude, location.Longitude),
+                            Location = new Location(contractor.Latitude, contractor.Longitude),
                             Address = $"Avaliação: {contractor.Rate}",
-                            //ImageSource = ImageSource.FromFile($"{(_user.Servant ? "contractor" : "servant")}.png")
                             ImageSource = ImageSource.FromFile("person.png")
                         });
 
@@ -186,12 +177,13 @@ public partial class ContractorView : ContentPage
                 });
 
 
-                if (Frame.BackgroundColor != Colors.LimeGreen) Frame.BackgroundColor = Colors.LimeGreen; ;
-                await Task.Delay(10000);
-            }
+                if (Frame.BackgroundColor != Colors.MediumSpringGreen) Frame.BackgroundColor = Colors.MediumSpringGreen;
 
-            Frame.BackgroundColor = Colors.White;
-            Frame.BorderColor = Colors.White;
+                MainThread.BeginInvokeOnMainThread(() => ActivityIndicatorLoading.IsRunning = false);
+                await Task.Delay(10000);
+
+                Frame.BackgroundColor = Colors.White;
+            }
 
         }
         catch (Exception ex)
@@ -202,6 +194,7 @@ public partial class ContractorView : ContentPage
             });
 
             Frame.BackgroundColor = Colors.Red;
+            MainThread.BeginInvokeOnMainThread(() => ActivityIndicatorLoading.IsRunning = false);
         }
         finally
         {

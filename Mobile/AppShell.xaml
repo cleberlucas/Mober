@@ -22,16 +22,7 @@
                        FontAttributes="Bold"
                        HorizontalTextAlignment="Center"
                        VerticalTextAlignment="End" 
-                   Margin="10"
-                       />
-
-                <!--<Label Text="{Binding UserPhone}"
-                    TextColor="White"
-                    FontAttributes="Bold"
-                    HorizontalTextAlignment="End"
-                    VerticalTextAlignment="End"
-                   Margin="10,0"
-                       />-->
+                       Margin="10"/>
             </Grid>
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
@@ -51,7 +42,7 @@
     
     <ShellContent 
         Title="Sobre"           
-        Icon="sobre.png" 
+        Icon="about.png" 
         Route="ServantView" 
         />
 

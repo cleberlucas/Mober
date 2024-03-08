@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using ZXing.Net.Maui;
+using Map = Microsoft.Maui.Controls.Maps.Map;
+using CustomMapHandler = Mobile.Platforms.Android.Handlers.CustomMapHandler;
 
 namespace Mobile;
 public static class MauiProgram
@@ -21,7 +23,7 @@ public static class MauiProgram
             .ConfigureMauiHandlers(h =>
             {
 #if ANDROID || IOS || MACCATALYST
-                h.AddHandler<Microsoft.Maui.Controls.Maps.Map, Platforms.Android.Handlers.CustomMapHandler>();
+                h.AddHandler<Map, CustomMapHandler>();
 #endif
             });
 #if DEBUG

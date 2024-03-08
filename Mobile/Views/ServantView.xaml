@@ -18,21 +18,14 @@
            IsShowingUser="{Binding Enable}" 
            IsZoomEnabled="{Binding Enable}" />
 
-        <!--<maps:Map
-            x:Name="MyMap"
-            >
-            <maps:Map.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type models:LocationPin}">
-                    
-                </DataTemplate>
-            </maps:Map.ItemTemplate>
-        </maps:Map>-->
 
-        <Grid HeightRequest="50" WidthRequest="50" BackgroundColor="Transparent" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,20,0,0">
-            <Frame x:Name="Frame" CornerRadius="100" BackgroundColor="WhiteSmoke">
-                <ImageButton Source="live_location" HeightRequest="50" WidthRequest="50" Clicked="LiveLocactionButton_Cliked"/>
+        <Grid HeightRequest="50" WidthRequest="50" BackgroundColor="Transparent"  HorizontalOptions="Center" VerticalOptions="Start" Margin="0,20,0,0">
+            <Frame x:Name="Frame" CornerRadius="100" BorderColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Gray950}}">
+                <ImageButton Source="livelocation" HeightRequest="50" WidthRequest="50" Clicked="LiveLocactionButton_Cliked" />
             </Frame>
         </Grid>
+
+        <ActivityIndicator x:Name="ActivityIndicatorLoading" VerticalOptions="Start" HeightRequest="75"  Margin="0,8,0,0" Color="MediumSpringGreen"/>
 
         <Picker 
              Title="Selecionar Serviço"

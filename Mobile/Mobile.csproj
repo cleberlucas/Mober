@@ -32,15 +32,13 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Platforms\Android\Resources\mipmap\sym_def_app_icon.svg" />
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#ffffff" />
 		
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Images\mober_logo.png" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -48,22 +46,6 @@
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="Platforms\Android\Resources\mipmap\sym_def_app_icon.svg" />
-	  <None Remove="Resources\Fonts\logout.png" />
-	  <None Remove="Resources\Images\contractor.png" />
-	  <None Remove="Resources\Images\map.png" />
-	  <None Remove="Resources\Images\request.png" />
-	  <None Remove="Resources\Images\servant.png" />
-	  <None Remove="Resources\Images\sobre.png" />
-	  <None Remove="Resources\Images\work.png" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <MauiFont Include="Resources\Images\logout.png" />
-	</ItemGroup>
-
 
 	<ItemGroup>
 		<PackageReference Include="Appwrite" Version="0.7.1" />

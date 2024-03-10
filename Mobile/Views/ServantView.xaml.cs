@@ -102,105 +102,107 @@ public partial class ServantView : ContentPage
 
         if (_liveLocation)
         {
-            if (!_serviceLiveLocationRunning) await Task.Run(() => ServiceLiveLocation());
+            if (!_serviceLiveLocationRunning) await ServiceLiveLocation();
         }
         else
         {
-            Frame.BackgroundColor = Colors.White;
+            Button.BackgroundColor = Colors.DeepSkyBlue;
         }
 
     }
 
     public async Task ServiceLiveLocation()
     {
-        try
-        {
-            if (((string)PickerService.SelectedItem).IsEmpty())
+        await Task.Run(async () => {
+            try
+            {
+                if (((string)PickerService.SelectedItem).IsEmpty())
+                {
+                    MainThread.BeginInvokeOnMainThread(async () =>
+                    {
+                        await DisplayAlert("Serviço não informado:", "Você deve informar um serviço!", "OK");
+                    });
+
+                    return;
+                }
+
+                _serviceLiveLocationRunning = true;
+
+                while (_liveLocation)
+                {
+                    _user.Service = (string)PickerService.SelectedItem;
+
+                    var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+                    var location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
+
+                    _cancelTokenSource = new CancellationTokenSource();
+
+                    _user.Latitude = location.Latitude;
+                    _user.Longitude = location.Longitude;
+                    _user.Updated = DateTime.Now;
+
+                    if ((await _appwriteService.GetUser(_user.Name)).Name.IsEmpty())
+                    {
+                        await _appwriteService.CreateUser(_user);
+                    }
+                    else
+                    {
+                        await _appwriteService.UpdateUser(_user);
+                    }
+
+                    var contractors = (await _appwriteService.GetUsers())
+                        .Where(
+                            x =>
+                            x.Servant != _user.Servant &&
+                            x.Service == _user.Service &&
+                            DateTime.Now - x.Updated < TimeSpan.FromMinutes(5)
+                        );
+
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        map.Pins.Clear();
+                        foreach (var contractor in contractors)
+                        {
+
+                            map.Pins.Add(new CustomPin
+                            {
+                                Label = contractor.Name,
+                                Location = new Location(contractor.Latitude, contractor.Longitude),
+                                Address = $"Avaliação: {contractor.Rate}",
+                                ImageSource = ImageSource.FromFile("person.png")
+                            });
+
+                        }
+                    });
+
+
+                    if (Button.BackgroundColor != Colors.MediumSpringGreen)
+                    {
+                        MainThread.BeginInvokeOnMainThread(() => { Button.BackgroundColor = Colors.MediumSpringGreen; });
+                    }
+
+
+                    await Task.Delay(10000);
+
+                }
+
+                MainThread.BeginInvokeOnMainThread(() => { Button.BackgroundColor = Colors.DeepSkyBlue; });
+
+            }
+            catch (Exception ex)
             {
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
-                    await DisplayAlert("Serviço não informado:", "Você deve informar um serviço!", "OK");
+                    await DisplayAlert("Ocorreu um erro no serviço da localização:", ex.Message, "OK");
                 });
 
+                MainThread.BeginInvokeOnMainThread(() => { Button.BackgroundColor = Colors.Red; });
+            }
+            finally
+            {
                 _serviceLiveLocationRunning = false;
-
-                return;
             }
-
-            _serviceLiveLocationRunning = true;
-
-            while (_liveLocation)
-            {
-                MainThread.BeginInvokeOnMainThread(() => { ActivityIndicatorLoading.IsRunning = true; });
-
-                _user.Service = (string)PickerService.SelectedItem;
-                var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
-                var location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
-
-                _cancelTokenSource = new CancellationTokenSource();
-
-                _user.Latitude = location.Latitude;
-                _user.Longitude = location.Longitude;
-                _user.Updated = DateTime.Now;
-
-                if ((await _appwriteService.GetUser(_user.Name)).Name.IsEmpty())
-                {
-                    await _appwriteService.CreateUser(_user);
-                }
-                else
-                {
-                    await _appwriteService.UpdateUser(_user);
-                }
-
-                var contractors = (await _appwriteService.GetUsers())
-                    .Where(
-                        x =>
-                        x.Servant != _user.Servant &&
-                        x.Service == _user.Service &&
-                        DateTime.Now - x.Updated < TimeSpan.FromMinutes(5)
-                    );
-
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    map.Pins.Clear();
-                    foreach (var contractor in contractors)
-                    {
-
-                        map.Pins.Add(new CustomPin
-                        {
-                            Label = contractor.Name,
-                            Location = new Location(contractor.Latitude, contractor.Longitude),
-                            Address = $"Avaliação: {contractor.Rate}",
-                            ImageSource = ImageSource.FromFile("person.png")
-                        });
-
-                    }
-                });
-
-
-                if (Frame.BackgroundColor != Colors.MediumSpringGreen) Frame.BackgroundColor = Colors.MediumSpringGreen;
-
-                MainThread.BeginInvokeOnMainThread(() => ActivityIndicatorLoading.IsRunning = false);
-                await Task.Delay(10000);
-
-            }
-
-            Frame.BackgroundColor = Colors.White;
-        }
-        catch (Exception ex)
-        {
-            MainThread.BeginInvokeOnMainThread(async () =>
-            {
-                await DisplayAlert("Ocorreu um erro no serviço da localização:", ex.Message, "OK");
-            });
-
-            Frame.BackgroundColor = Colors.Red;
-            MainThread.BeginInvokeOnMainThread(() => ActivityIndicatorLoading.IsRunning = false);
-        }
-        finally
-        {
-            _serviceLiveLocationRunning = false;
-        }
+        });    
     }
 
 }

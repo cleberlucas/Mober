@@ -48,6 +48,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\activelist.png" />
+	  <None Remove="Resources\Images\activelistnbg.png" />
+	  <None Remove="Resources\Images\call.png" />
+	  <None Remove="Resources\Images\user.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Appwrite" Version="0.7.1" />
 		<PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
@@ -71,8 +78,8 @@
 	  <Compile Update="Views\LoginView.xaml.cs">
 	    <DependentUpon>LoginView.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\ContractorView.xaml.cs">
-	    <DependentUpon>ContractorView.xaml</DependentUpon>
+	  <Compile Update="Views\ChatView.xaml.cs">
+	    <DependentUpon>ChatView.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\ServantView.xaml.cs">
 	    <DependentUpon>ServantView.xaml</DependentUpon>
@@ -83,7 +90,7 @@
 	  <MauiXaml Update="Views\LoginView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\ContractorView.xaml">
+	  <MauiXaml Update="Views\ChatView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ServantView.xaml">

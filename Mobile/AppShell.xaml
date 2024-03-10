@@ -5,11 +5,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:Views="clr-namespace:Mobile.Views"
     xmlns:ViewModels="clr-namespace:Mobile.ViewModels"
-    Shell.FlyoutBehavior="Flyout"
+    Shell.FlyoutBehavior="Disabled"
     Shell.BackgroundColor="Transparent"
+    Shell.NavBarIsVisible="False"
+
     >
 
-    <Shell.FlyoutHeaderTemplate>
+    <!--<Shell.FlyoutHeaderTemplate>
         <DataTemplate>
             <Grid BackgroundColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Gray950}}"
                   HeightRequest="200">
@@ -25,15 +27,30 @@
                        Margin="10"/>
             </Grid>
         </DataTemplate>
-    </Shell.FlyoutHeaderTemplate>
+    </Shell.FlyoutHeaderTemplate>-->
 
+    <!--<Shell.TitleView>
+        <ContentView>
+            <ContentView.Content>
+                <StackLayout />
+            </ContentView.Content>
+        </ContentView>
+    </Shell.TitleView>-->
 
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
-        <ShellContent x:Name="ShellRequestService" Icon="request" Title="Solicitar"  Route="ContractorView" ContentTemplate="{DataTemplate Views:ContractorView}" />
-        <ShellContent x:Name="ShellSearchService" Icon="work" Title="Procurar"  Route="ServantView" ContentTemplate="{DataTemplate Views:ServantView}" />
+        
+        <!--<ShellContent x:Name="ShellRequestService" Icon="activelistnbg" Ti Route="ChatView" ContentTemplate="{DataTemplate Views:ChatView}"  />
+        <ShellContent x:Name="ShellSearchService1" Icon="location"    Route="ServantView" ContentTemplate="{DataTemplate Views:ServantView}" />
+        <ShellContent x:Name="ShellSearchService" Icon="profile"   Route="ServantView" ContentTemplate="{DataTemplate Views:ServantView}" />-->
+        <ShellContent x:Name="ShellRequestService" Icon="activelistnbg" Title="Minhas Atividades" Route="ChatView" ContentTemplate="{DataTemplate Views:ChatView}"  />
+        <ShellContent x:Name="ShellSearchService1" Icon="call" Title="Solicitar Serviço"   Route="ServantView" ContentTemplate="{DataTemplate Views:ServantView}" />
+        <ShellContent x:Name="ShellSearchService" Icon="user" Title="Meus Dados"  Route="ServantView" ContentTemplate="{DataTemplate Views:ServantView}" />
     </FlyoutItem>
 
-    <MenuItem  
+
+
+
+    <!--<MenuItem  
         Text="Sair" 
         StyleClass="MenuItemLayoutStyle" 
         Clicked="OnLogoutButtonClicked"
@@ -42,8 +59,8 @@
     
     <ShellContent 
         Title="Sobre"           
-        Icon="about.png" 
+        Icon="sobre.png" 
         Route="ServantView" 
-        />
+        />-->
 
 </Shell>

@@ -13,34 +13,48 @@
     <Grid x:DataType="local:ServantViewModel">
         <Map 
            x:Name="map" 
-           Margin="0,0,0,40" 
-           IsScrollEnabled="{Binding Enable}" 
-           IsShowingUser="{Binding Enable}" 
-           IsZoomEnabled="{Binding Enable}" />
+            IsScrollEnabled="False" 
+            IsZoomEnabled="False" 
+            IsShowingUser="{Binding Enable}" 
+            HeightRequest="600" 
+            VerticalOptions="Start" 
+            MapType="Street"
+        />
+
+        <Frame VerticalOptions="End" x:Name="Frame" HeightRequest="200" Margin="-2,-20" CornerRadius="20" 
+               BackgroundColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Black}}"   
+               BorderColor="Transparent">
+            <Grid>
+                <Label></Label>
+
+                <Button x:Name="Button"
+                    Clicked="LiveLocactionButton_Cliked" 
+                    HeightRequest="50" 
+                    WidthRequest="100" 
+                    VerticalOptions="End" 
+                    HorizontalOptions="End" 
+                    Margin="10,100"
+                    TextColor="White"
+                    BackgroundColor="DeepSkyBlue" Text="Chamar"/>
+
+                <Picker 
+                  Title="Selecionar Serviço"
+                  BackgroundColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Black}}"           
+                  TextColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Gray400}}"   
+                  TitleColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Gray400}}"
+                  x:Name="PickerService" 
+                  SelectedIndexChanged="Picker_SelectedIndexChanged" 
+                  HorizontalTextAlignment="Center" 
+                  HeightRequest="40" 
+                  FontAttributes="Bold" 
+                  FontSize="15"  
+                  VerticalOptions="End" 
+                  ItemsSource="{Binding Services}"  />
+            </Grid>
+        </Frame>
 
 
-        <Grid HeightRequest="50" WidthRequest="50" BackgroundColor="Transparent"  HorizontalOptions="Center" VerticalOptions="Start" Margin="0,20,0,0">
-            <Frame x:Name="Frame" CornerRadius="100" BorderColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Gray950}}">
-                <ImageButton Source="livelocation" HeightRequest="50" WidthRequest="50" Clicked="LiveLocactionButton_Cliked" />
-            </Frame>
-        </Grid>
-
-        <ActivityIndicator x:Name="ActivityIndicatorLoading" VerticalOptions="Start" HeightRequest="75"  Margin="0,8,0,0" Color="MediumSpringGreen"/>
-
-        <Picker 
-             Title="Selecionar Serviço"
-             BackgroundColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Gray950}}"           
-             TextColor="{AppThemeBinding Light={StaticResource Gray950},Dark={StaticResource Primary}}"   
-             TitleColor="{AppThemeBinding Light={StaticResource Gray950},Dark={StaticResource Primary}}"
-             x:Name="PickerService" 
-             SelectedIndexChanged="Picker_SelectedIndexChanged" 
-             HorizontalTextAlignment="Center" 
-             HeightRequest="40" 
-             FontAttributes="Bold" 
-             FontSize="15" 
-             Margin="0,0,0,0"   
-             VerticalOptions="End" 
-             ItemsSource="{Binding Services}"  />
+       
 
     </Grid>
 </ContentPage>

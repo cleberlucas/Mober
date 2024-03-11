@@ -10,7 +10,7 @@ namespace Mobile.Views;
 
 
 
-public partial class ServantView : ContentPage
+public partial class ServiceView : ContentPage
 {
     public IMoberLoginDataStorage _moberLoginDataStorage => DependencyService.Get<IMoberLoginDataStorage>();
 
@@ -24,14 +24,14 @@ public partial class ServantView : ContentPage
     public bool _liveLocation;
     public string _token;
 
-    readonly ServantViewModel _viewModel;
+    readonly ServiceViewModel _viewModel;
 
-    public ServantView()
+    public ServiceView()
     {
         InitializeComponent();
 
 
-        BindingContext = _viewModel = new ServantViewModel()
+        BindingContext = _viewModel = new ServiceViewModel()
         {
             Services = Services.List
         };
@@ -107,6 +107,7 @@ public partial class ServantView : ContentPage
         else
         {
             Button.BackgroundColor = Colors.DeepSkyBlue;
+            Button.Text = "Solicitar";
         }
 
     }
@@ -131,6 +132,14 @@ public partial class ServantView : ContentPage
                 while (_liveLocation)
                 {
                     _user.Service = (string)PickerService.SelectedItem;
+
+                    if (Frame.BackgroundColor != Colors.Green)
+                    {
+                        MainThread.BeginInvokeOnMainThread(() => {
+                            Frame.BackgroundColor = Colors.Green;
+                            Label.Text = "Procurando ...";
+                        });
+                    }
 
                     var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
                     var location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
@@ -176,9 +185,12 @@ public partial class ServantView : ContentPage
                     });
 
 
-                    if (Button.BackgroundColor != Colors.MediumSpringGreen)
+                    if (Button.BackgroundColor != Colors.Tomato)
                     {
-                        MainThread.BeginInvokeOnMainThread(() => { Button.BackgroundColor = Colors.MediumSpringGreen; });
+                        MainThread.BeginInvokeOnMainThread(() => { 
+                            Button.BackgroundColor = Colors.Tomato;
+                            Button.Text = "Cancelar";
+                        });
                     }
 
 
@@ -186,7 +198,7 @@ public partial class ServantView : ContentPage
 
                 }
 
-                MainThread.BeginInvokeOnMainThread(() => { Button.BackgroundColor = Colors.DeepSkyBlue; });
+
 
             }
             catch (Exception ex)
@@ -196,11 +208,17 @@ public partial class ServantView : ContentPage
                     await DisplayAlert("Ocorreu um erro no serviço da localização:", ex.Message, "OK");
                 });
 
-                MainThread.BeginInvokeOnMainThread(() => { Button.BackgroundColor = Colors.Red; });
             }
             finally
             {
-                _serviceLiveLocationRunning = false;
+                MainThread.BeginInvokeOnMainThread(() => {
+                    Button.BackgroundColor = Colors.DeepSkyBlue;
+                    Button.Text = "Solicitar";
+
+
+                    Frame.BackgroundColor = Colors.Transparent;
+                    Label.Text = "";
+                });
             }
         });    
     }

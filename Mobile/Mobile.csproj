@@ -51,6 +51,7 @@
 	  <None Remove="Resources\Images\activelist.png" />
 	  <None Remove="Resources\Images\activelistnbg.png" />
 	  <None Remove="Resources\Images\call.png" />
+	  <None Remove="Resources\Images\schedule.png" />
 	  <None Remove="Resources\Images\user.png" />
 	</ItemGroup>
 
@@ -75,25 +76,31 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\UserView.xaml.cs">
+	    <DependentUpon>UserView.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\LoginView.xaml.cs">
 	    <DependentUpon>LoginView.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\ChatView.xaml.cs">
 	    <DependentUpon>ChatView.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\ServantView.xaml.cs">
-	    <DependentUpon>ServantView.xaml</DependentUpon>
+	  <Compile Update="Views\ServiceView.xaml.cs">
+	    <DependentUpon>ServiceView.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\UserView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\LoginView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ChatView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\ServantView.xaml">
+	  <MauiXaml Update="Views\ServiceView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

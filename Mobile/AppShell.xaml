@@ -42,9 +42,10 @@
         <!--<ShellContent x:Name="ShellRequestService" Icon="activelistnbg" Ti Route="ChatView" ContentTemplate="{DataTemplate Views:ChatView}"  />
         <ShellContent x:Name="ShellSearchService1" Icon="location"    Route="ServantView" ContentTemplate="{DataTemplate Views:ServantView}" />
         <ShellContent x:Name="ShellSearchService" Icon="profile"   Route="ServantView" ContentTemplate="{DataTemplate Views:ServantView}" />-->
-        <ShellContent x:Name="ShellRequestService" Icon="activelistnbg" Title="Minhas Atividades" Route="ChatView" ContentTemplate="{DataTemplate Views:ChatView}"  />
-        <ShellContent x:Name="ShellSearchService1" Icon="call" Title="Solicitar Serviço"   Route="ServantView" ContentTemplate="{DataTemplate Views:ServantView}" />
-        <ShellContent x:Name="ShellSearchService" Icon="user" Title="Meus Dados"  Route="ServantView" ContentTemplate="{DataTemplate Views:ServantView}" />
+        <ShellContent Icon="call" Title="Solicitar Serviço"   Route="ServiceView" ContentTemplate="{DataTemplate Views:ServiceView}" />
+        <ShellContent Icon="activelistnbg" Title="Minhas Atividades"  Route="ChatView" ContentTemplate="{DataTemplate Views:ChatView}"  />
+        <ShellContent Icon="schedule" Title="MInha Agenda"  Route="ChatView" ContentTemplate="{DataTemplate Views:ChatView}"  />
+        <ShellContent Icon="user" Title="Meus Dados"  Route="UserView" ContentTemplate="{DataTemplate Views:UserView}" />
     </FlyoutItem>
 
 

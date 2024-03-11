@@ -2,52 +2,69 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Mobile.ViewModels"
-             x:DataType="local:ServantViewModel"
+             x:DataType="local:ServiceViewModel"
              xmlns:class="clr-namespace:Mobile.ViewModels"
              xmlns:model="clr-namespace:Mobile.Models"
              xmlns:telerik="http://schemas.telerik.com/2022/xaml/maui"
              xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
-             x:Class="Mobile.Views.ServantView">
+             x:Class="Mobile.Views.ServiceView">
 
 
-    <Grid x:DataType="local:ServantViewModel">
+    <Grid x:DataType="local:ServiceViewModel">
         <Map 
            x:Name="map" 
             IsScrollEnabled="False" 
             IsZoomEnabled="False" 
             IsShowingUser="{Binding Enable}" 
-            HeightRequest="600" 
+
             VerticalOptions="Start" 
             MapType="Street"
         />
+        
 
-        <Frame VerticalOptions="End" x:Name="Frame" HeightRequest="200" Margin="-2,-20" CornerRadius="20" 
+        <Frame VerticalOptions="End" HeightRequest="130"  Margin="-1,-25" CornerRadius="30" 
                BackgroundColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Black}}"   
                BorderColor="Transparent">
             <Grid>
-                <Label></Label>
-
                 <Button x:Name="Button"
                     Clicked="LiveLocactionButton_Cliked" 
                     HeightRequest="50" 
-                    WidthRequest="100" 
-                    VerticalOptions="End" 
+                    VerticalOptions="Start" 
                     HorizontalOptions="End" 
-                    Margin="10,100"
+                    Margin="0"
                     TextColor="White"
-                    BackgroundColor="DeepSkyBlue" Text="Chamar"/>
+                    CornerRadius="30"
+                    FontSize="18" 
+                    BackgroundColor="DeepSkyBlue" Text="Solicitar"/>
+
+                <Grid>
+                    <Frame 
+                        x:Name="Frame" 
+                        VerticalOptions="Start" 
+                        HorizontalOptions="Start" 
+                        HeightRequest="10"  
+                        WidthRequest="10"  
+                        CornerRadius="50"   
+                        BorderColor="Transparent"/>
+
+                    <Label  
+                        x:Name="Label" 
+                        Margin="30,0"
+                        VerticalOptions="Start" 
+                        HorizontalOptions="Start" 
+                        Text=""
+                        />
+                </Grid>
+             
 
                 <Picker 
-                  Title="Selecionar Serviço"
-                  BackgroundColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Black}}"           
-                  TextColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Gray400}}"   
-                  TitleColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Gray400}}"
+                  Title="Selecionar"  
                   x:Name="PickerService" 
                   SelectedIndexChanged="Picker_SelectedIndexChanged" 
                   HorizontalTextAlignment="Center" 
                   HeightRequest="40" 
                   FontAttributes="Bold" 
-                  FontSize="15"  
+                  FontSize="18"  
                   VerticalOptions="End" 
                   ItemsSource="{Binding Services}"  />
             </Grid>

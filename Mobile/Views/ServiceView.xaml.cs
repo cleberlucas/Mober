@@ -219,6 +219,8 @@ public partial class ServiceView : ContentPage
                     Frame.BackgroundColor = Colors.Transparent;
                     Label.Text = "";
                 });
+
+                _serviceLiveLocationRunning = false;
             }
         });    
     }

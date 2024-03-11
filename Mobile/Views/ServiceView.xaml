@@ -22,7 +22,7 @@
         />
         
 
-        <Frame VerticalOptions="End" HeightRequest="130"  Margin="-1,-25" CornerRadius="30" 
+        <Frame VerticalOptions="End" HeightRequest="130"  Margin="-5,-25" CornerRadius="30" 
                BackgroundColor="{AppThemeBinding Light={StaticResource White},Dark={StaticResource Black}}"   
                BorderColor="Transparent">
             <Grid>
@@ -45,7 +45,9 @@
                         HeightRequest="10"  
                         WidthRequest="10"  
                         CornerRadius="50"   
-                        BorderColor="Transparent"/>
+                        BorderColor="Transparent"
+                        BackgroundColor="Transparent"
+                        />
 
                     <Label  
                         x:Name="Label" 
